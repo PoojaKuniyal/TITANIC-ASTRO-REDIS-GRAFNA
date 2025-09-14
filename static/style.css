@@ -1,0 +1,140 @@
+/* style.css */
+
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #1e3a8a, #2563eb, #3b82f6);
+    background-size: 400% 400%;
+    animation: gradientShift 12s ease infinite;
+    color: #333; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Container (Card) */
+.container {
+    width: 90%;
+    max-width: 600px;
+    background: #ffe4ec; /* light pink */
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Heading */
+h1 {
+    text-align: center;
+    color: #1e3a8a;
+    margin-bottom: 25px;
+}
+
+/* Form Styling */
+.prediction-form {
+    display: grid;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #444;
+}
+
+input, select {
+    padding: 10px 12px;
+    border: 2px solid #1e3a8a;
+    border-radius: 10px;
+    font-size: 15px;
+    color: #333;
+    transition: 0.3s ease;
+    outline: none;
+    background: #f9fafb;
+}
+
+input:focus, select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 8px rgba(37, 99, 235, 0.5);
+}
+
+/* Button Styling */
+.btn {
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #1e3a8a, #2563eb);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+    background: linear-gradient(90deg, #2563eb, #3b82f6);
+    transform: translateY(-2px);
+}
+
+/* Prediction Result */
+.prediction-result {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+/* Dynamic result colors */
+.prediction-result.success {
+    background: #e6f9ed; /* light green */
+    border: 2px solid #16a34a;
+    color: #14532d;
+}
+
+.prediction-result.danger {
+    background: #fde2e2; /* light red */
+    border: 2px solid #dc2626;
+    color: #7f1d1d;
+}
+
+.prediction-result h3 {
+    color: #1e3a8a;
+    margin-bottom: 10px;
+}
+
+.prediction-result p {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
