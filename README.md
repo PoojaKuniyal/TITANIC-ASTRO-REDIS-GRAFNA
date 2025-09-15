@@ -1,45 +1,164 @@
-Overview
-========
+🚢 Titanic User Survival Prediction – MLOps Pipeline with Airflow, Redis, Grafana & Prometheus
+📌 Project Overview
 
-Welcome to Astronomer! This project was generated after you ran 'astro dev init' using the Astronomer CLI. This readme describes the contents of the project, as well as how to run Apache Airflow on your local machine.
+This project demonstrates a production-ready MLOps pipeline for predicting Titanic passenger survival, integrating data engineering, feature store management, drift detection, and ML monitoring.
 
-Project Contents
-================
+Dataset: Titanic dataset uploaded to Google Cloud Storage (GCS).
 
-Your Astro project contains the following files and folders:
+Pipeline: Built with Astro Airflow, containerized via Docker, and orchestrated for ETL and ML workflows.
 
-- dags: This folder contains the Python files for your Airflow DAGs. By default, this directory includes one example DAG:
-    - `example_astronauts`: This DAG shows a simple ETL pipeline example that queries the list of astronauts currently in space from the Open Notify API and prints a statement for each astronaut. The DAG uses the TaskFlow API to define tasks in Python, and dynamic task mapping to dynamically print a statement for each astronaut. For more on how this DAG works, see our [Getting started tutorial](https://www.astronomer.io/docs/learn/get-started-with-airflow).
-- Dockerfile: This file contains a versioned Astro Runtime Docker image that provides a differentiated Airflow experience. If you want to execute other commands or overrides at runtime, specify them here.
-- include: This folder contains any additional files that you want to include as part of your project. It is empty by default.
-- packages.txt: Install OS-level packages needed for your project by adding them to this file. It is empty by default.
-- requirements.txt: Install Python packages needed for your project by adding them to this file. It is empty by default.
-- plugins: Add custom or community plugins for your project to this file. It is empty by default.
-- airflow_settings.yaml: Use this local-only file to specify Airflow Connections, Variables, and Pools instead of entering them in the Airflow UI as you develop DAGs in this project.
+Database: Features stored in PostgreSQL and Redis (as feature store).
 
-Deploy Your Project Locally
-===========================
+Monitoring: Real-time data drift detection with Alibi Detect and ML monitoring dashboards powered by Prometheus + Grafana.
 
-Start Airflow on your local machine by running 'astro dev start'.
+Model Deployment: Flask-based UI for live user predictions.
 
-This command will spin up five Docker containers on your machine, each for a different Airflow component:
+Metric: Model achieves an accuracy of 0.80 on test data.
 
-- Postgres: Airflow's Metadata Database
-- Scheduler: The Airflow component responsible for monitoring and triggering tasks
-- DAG Processor: The Airflow component responsible for parsing DAGs
-- API Server: The Airflow component responsible for serving the Airflow UI and API
-- Triggerer: The Airflow component responsible for triggering deferred tasks
+## 📹 Demo Video
 
-When all five containers are ready the command will open the browser to the Airflow UI at http://localhost:8080/. You should also be able to access your Postgres Database at 'localhost:5432/postgres' with username 'postgres' and password 'postgres'.
+👉 [Watch the project demo here](https://vimeo.com/1118501721)
 
-Note: If you already have either of the above ports allocated, you can either [stop your existing Docker containers or change the port](https://www.astronomer.io/docs/astro/cli/troubleshoot-locally#ports-are-not-available-for-my-local-airflow-webserver).
+---
 
-Deploy Your Project to Astronomer
-=================================
+🔄 Workflow
+1. Data Engineering with Airflow
 
-If you have an Astronomer account, pushing code to a Deployment on Astronomer is simple. For deploying instructions, refer to Astronomer documentation: https://www.astronomer.io/docs/astro/deploy-code/
+Extract Titanic dataset from GCS bucket.
 
-Contact
-=======
+Load into PostgreSQL for structured storage.
 
-The Astronomer CLI is maintained with love by the Astronomer team. To report a bug or suggest a change, reach out to our support.
+Containerized with Docker for portability.
+
+2. Feature Store with Redis
+
+Store processed features in Redis for efficient retrieval at training and prediction time.
+
+Implemented using a custom RedisFeatureStore class with methods to:
+
+Store features for individual or multiple entities.
+
+Retrieve features by entity ID or batch.
+
+List all stored entities.
+
+3. Model Training & Versioning
+
+Features retrieved from Redis → transformed & scaled.
+
+RandomForest classifier trained on engineered features.
+
+Model + code versioned via GitHub for reproducibility.
+
+4. Flask Web App for Prediction
+
+UI accepts user input (Age, Fare, Pclass, Sex, Embarked, FamilySize, etc.).
+
+Model predicts survival probability.
+
+Prediction results displayed in the browser.
+
+5. Data Drift Detection
+
+Drift detection powered by Alibi Detect (KSDrift).
+
+Reference data: stored training dataset from feature store.
+
+Current data: live user inputs via Flask UI.
+
+Drift events logged and monitored in Prometheus.
+
+6. ML Monitoring with Prometheus & Grafana
+
+Prometheus:
+
+Collects metrics (prediction_count, drift_count).
+
+Exposes metrics via /metrics endpoint in Flask.
+
+Grafana:
+
+Visualizes prediction and drift metrics.
+
+Dashboards for monitoring ML system health.
+
+7. Local Monitoring & CICD
+
+Attempted CI/CD with Jenkins + Google Cloud Run, but due to quota limits, monitoring was deployed locally.
+
+Still demonstrates full ML observability pipeline.
+
+---------------------
+
+        ┌──────────────┐
+        │ Google Cloud │
+        │   Storage    │
+        └──────┬───────┘
+               │
+        ┌──────▼───────┐
+        │   Airflow    │
+        │  (Docker)    │
+        └──────┬───────┘
+               │
+        ┌──────▼───────┐
+        │ PostgreSQL   │
+        └──────┬───────┘
+               │
+        ┌──────▼───────┐
+        │   Redis      │  ← Feature Store
+        └──────┬───────┘
+               │
+        ┌──────▼──────────┐
+        │ Flask Web App   │
+        │  User Input UI  │
+        └──────┬──────────┘
+               │
+     ┌─────────▼─────────┐
+     │ Drift Detection    │
+     │ (Alibi Detect)     │
+     └─────────┬─────────┘
+               │
+        ┌──────▼───────┐
+        │ Prometheus   │ ← Metrics collection
+        └──────┬───────┘
+               │
+        ┌──────▼───────┐
+        │  Grafana     │ ← Dashboards
+        └──────────────┘
+
+-------------
+Tech Stack
+
+Data Orchestration: Apache Airflow (Astro)
+
+Storage: Google Cloud Storage, PostgreSQL
+
+Feature Store: Redis
+
+Modeling: scikit-learn (RandomForest Classifier)
+
+Deployment: Flask, Docker
+
+Monitoring: Prometheus, Grafana, Alibi Detect
+
+Versioning: GitHub (code + dataset versioning)
+
+CI/CD (attempted): Jenkins, GCP
+
+--------------
+
+📊 Metrics & Monitoring
+
+Prediction Count (prediction_count) → Total number of predictions made.
+
+Drift Count (drift_count) → Number of times data drift detected.
+
+Accuracy: 0.80 on test dataset.
+
+Grafana Dashboards:
+
+Prediction activity over time.
+
+Drift detection alerts.
+
+Custom Prometheus metrics visualization.
