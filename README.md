@@ -162,4 +162,12 @@ Prediction activity over time.
 
 Drift detection alerts.
 
-Custom Prometheus metrics visualization.
+Custom Prometheus metrics visualization. 
+
+----
+## 📡 Airflow Orchestration
+
+The data pipeline is orchestrated using **Apache Airflow**.  
+Below is a screenshot of the `extract_titanic_data` DAG successfully running all tasks (`list_files`, `download_file`, `load_to_sql`):
+
+![Airflow DAG Success](./artifacts/extract_titanic_dag.png)
