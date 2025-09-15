@@ -1,5 +1,6 @@
-🚢 Titanic User Survival Prediction – MLOps Pipeline with Airflow, Redis, Grafana & Prometheus
-📌 Project Overview
+# 🚢 Titanic User Survival Prediction – MLOps Pipeline with Airflow, Redis, Grafana & Prometheus
+
+**📌 Project Overview**
 
 This project demonstrates a production-ready MLOps pipeline for predicting Titanic passenger survival, integrating data engineering, feature store management, drift detection, and ML monitoring.
 
@@ -21,7 +22,7 @@ Metric: Model achieves an accuracy of 0.80 on test data.
 
 ---
 
-🔄 Workflow
+**🔄 Workflow**
 1. Data Engineering with Airflow
 
 Extract Titanic dataset from GCS bucket.
@@ -127,7 +128,7 @@ Still demonstrates full ML observability pipeline.
         └──────────────┘
 
 -------------
-Tech Stack
+**Tech Stack**
 
 Data Orchestration: Apache Airflow (Astro)
 
@@ -147,7 +148,7 @@ CI/CD (attempted): Jenkins, GCP
 
 --------------
 
-📊 Metrics & Monitoring
+**📊 Metrics & Monitoring**
 
 Prediction Count (prediction_count) → Total number of predictions made.
 
